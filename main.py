@@ -1,4 +1,5 @@
 from base64 import b64decode, b64encode
+
 def xordecode(message,key):
   message64 = b64decode(message)
   messagetwo = bytearray(message64)
@@ -23,38 +24,24 @@ def key_scoring(message):
       for i in range(len(thing)):
         keyScore += english_score(thing[i])
       listOfScores.append(keyScore)
-      print(len(listOfScores))
     except:
       pass
-
-
-  best = 0
-  best2 = 1
-  best3 = 2
-  best4 = 3
-  best5 = 4
-
-  for i in range(128):
-    if listOfScores[i] < listOfScores[best]:
-      best = i
-    elif listOfScores[i] > listOfScores[best] and listOfScores[i] < listOfScores[best2] and i != best:
-      best2 = i
-    elif listOfScores[i] > listOfScores[best2] and listOfScores[i] < listOfScores[best3] and i != best2:
-      best3 = i
-    elif listOfScores[i] > listOfScores[best3] and listOfScores[i] < listOfScores[best4] and i != best3:
-      best4 = i
-    elif listOfScores[i] > listOfScores[best4] and listOfScores[i] < listOfScores[best5] and i != best4 :
-      best5 = i
   
-  print(best)
-  print(best2)
-  keysToReturn = []
-  keysToReturn.append(best)
-  keysToReturn.append(best2)
-  keysToReturn.append(best3)
-  keysToReturn.append(best4)
-  keysToReturn.append(best5)
-  return keysToReturn
+  best = [0,1,2,3,4]
+  
+  for i in range(128):
+    if listOfScores[i] < listOfScores[best[0]]:
+      best[0] = i
+    elif listOfScores[i] > listOfScores[best[0]] and listOfScores[i] < listOfScores[best[1]] and i != best[0]:
+      best[1] = i
+    elif listOfScores[i] > listOfScores[best[1]] and listOfScores[i] < listOfScores[best[2]] and i != best[1]:
+      best[2] = i
+    elif listOfScores[i] > listOfScores[best[2]] and listOfScores[i] < listOfScores[best[3]] and i != best[2]:
+      best[3] = i
+    elif listOfScores[i] > listOfScores[best[3]] and listOfScores[i] < listOfScores[best[4]] and i != best[3] :
+      best[4] = i
+
+  return best
 
 def english_score(letter):
   capitalList = ["E","T","A","O","I","N","S","H","R","D","L","C","U","M","W","F","G","Y","P","B","V","K","J","X","Q","Z"]
