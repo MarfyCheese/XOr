@@ -1,10 +1,10 @@
 from base64 import b64decode, b64encode
 
-def xordecode(message,key):
+def xor_decode(message,key):
   message64 = b64decode(message)
   messagetwo = bytearray(message64)
-  
   messageThree = bytearray()
+
   for b in messagetwo:
     messageThree.append(b ^ key)
   try:
@@ -17,7 +17,7 @@ def key_scoring(message):
   for i in range(256):
     keyScore = 0
     try:
-      thing = xordecode(message,i)
+      thing = xor_decode(message,i)
     except UnicodeDecodeError:
       pass
     try:
@@ -28,8 +28,7 @@ def key_scoring(message):
       pass
   
   best = [0,1,2,3,4]
-  
-  for i in range(128):
+  for i in range(len(listOfScores)):
     if listOfScores[i] < listOfScores[best[0]]:
       best[0] = i
     elif listOfScores[i] > listOfScores[best[0]] and listOfScores[i] < listOfScores[best[1]] and i != best[0]:
@@ -61,23 +60,23 @@ def english_score(letter):
           if ltbs == lowerList[i]:
             return int(i + 1)
   
-def xorencode(message,key):
-  bightarray = bytearray(message, encoding = 'ASCII')
-  xoredarray = bytearray()
-  for b in bightarray:
-    xoredarray.append(b ^ key)
-  return(b64encode(xoredarray))
+def xor_encode(message,key):
+  bightArray = bytearray(message, encoding = 'ASCII')
+  xoredArray = bytearray()
+  for b in bightArray:
+    xoredArray.append(b ^ key)
+  return(b64encode(xoredArray))
 
 def main():
   thing = input("would you like to encode or decode\n")
   
   if thing == "encode" or thing == "Encode":
-    print(xorencode(input("please enter the thing to encode\n"), int(input("please enter the key\n"))))
+    print(xor_encode(input("please enter the thing to encode\n"), int(input("please enter the key\n"))))
   elif thing == "decode" or thing == "Decode":
     decodeMessage = input("please enter the thing to decode\n")
     listOfKeys = key_scoring(decodeMessage)
     for i in range(5):
-      print(xordecode(decodeMessage,listOfKeys[i]))
+      print(xor_decode(decodeMessage,listOfKeys[i]))
   else:
     print("that is not a valid request")
 
